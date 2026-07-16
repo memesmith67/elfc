@@ -1,5 +1,5 @@
 #copyright john morrris beck 2026 gpl2
-elfc(){ awk 'funcion c(x,y){d[x]=y}
+elfc(){ awk 'function c(x,y){d[x]=y}
 $1!="elfc",$1=="elfc"{
 b=",PROT_READ|PROT_WRITE,MAP_SHARED,";
 c("assign",$4"="$5)
@@ -15,8 +15,9 @@ c("get",""$3"=*("$4")")
 c("set","*"$4"="$3"")
 c("control",$3"("$4"){")
 c("literal",$2)
-c("case",$2" "$3":"
+c("case",$2" "$3":")
 c("var",$2" "$3")
 c("shell","system("$3")");
 print d[$2]";"}'>"$1";filcc "$1" -o "$1.exe";
 	rm "$1";chmod +x "$1.exe";};
+
