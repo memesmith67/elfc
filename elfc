@@ -4,7 +4,7 @@ d["assign"]=""$4"="$5;
 d["open"]=""$3"="$2"("$4",O_RDWR)";
 d["ftruncate"]=$2"("$3","$4")";
 d["map"]=""$3"=(int*)"$2"(0,"$4",PROT_READ|PROT_WRITE,MAP_SHARED,"$5",0)";
-d["munmap"]=$2"("$4","$5")";
+d["munmap"]=$2"("$3","$4")";
 d["memcpy"]=$2"("$3","$4","$5")";
 d["getchar"]=""$3"="$2()";
 d["putchar"]=$2"("$3"["$4"])";
