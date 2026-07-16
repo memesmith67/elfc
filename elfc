@@ -1,5 +1,5 @@
 #copyright john morrris beck 2026 gpl2
-elfc(){ awk '$1!="elfc",$1=="elfc"{
+elfc(){ awk '$1!="elfc",$1=="elfc"{#
 d["assign"]=""$4"="$5;
 d["open"]=""$3"="$2"("$4",O_RDWR)";
 d["ftruncate"]=$2"("$3","$4")";
@@ -16,4 +16,4 @@ d["literal"]=$2;
 d["case"]=$2" "$3":"
 d["var"]=$2" "$3";
 d["shell"]="system("$3")";
-print d[t]";"}'>"$1.c";filcc "$1.c" -o "$1";rm "$1.c";chmod +x "$1";};
+print d[t]";"}'>"$1";filcc "$1" -o "$1.exe";rm "$1";chmod +x "$1.exe";};
