@@ -1,26 +1,21 @@
 #!/usr/bin/env sh
 #copyright john morrris beck 2026 gpl2
-fastjit(){ cat>"$1/$2.c";filcc "$1/$2.c" -o "$1/$2.exe";
-           rm "$1/$2.c";chmod +x "$1/$2.exe";};
-elfc(){ awk 'BEGIN{print "void "$1"(int **p,*r,i;char *s){";
-b=",PROT_READ|PROT_WRITE,MAP_SHARED,(int)(intptr_t)";}
-{d["op"]="r["$3"]=r["$3"]"$2"r["$4"]";
-d["open"]="r["$2"]=open(r["$3"],O_RDWR)";
-d["ftruncate"]=$1"(r["$2"],r["$3"])";
-d["map"]="p["$2"]=(int*)mmap[0,r["$3"]"b"r["$4"],0)";
-d["unmap"]="munmap(p["$3"],r["$4"])";
-d["copy"]="memcpy(p["$2"],p["$3"],r["$4"])";
-d["assign"]="r["$2"]="$3;
-d["input"]="r["$2"]=getchar()";
-d["outpit"]="putchar(p[r["$2"]][r["$3"]])";
-d["get"]="r["$2"]=*(p[r["$3"]])";
-d["set"]="*p[r["$3"]]=r["$2"]";
-d["string"]="free(s);s=malloc(r["$2"]);for(i=0;i<r["$2"];";
-d["string"]=d["string"] "s[i]=*(char*)(*p[r["$4"]+i++]))";
-d["control"]=$2"("$3"){";
-d["end"]="}";
-d["break"]="break";
-d["case"]="case "$3":"
-d["return"]="return r["$2"]
-d["shell"]=system(s);
-print d[t]";"}}';};
+fastjit(){ cat>"$1.c";filcc "$1.c" -o "$1";rm "$1.c";chmod +x "$1";};
+elfc(){ awk '$1!="elfc",$1=="elfc"{
+d["assign"]=""$4"="$5;
+d["open"]=""$3"="$2"("$4",O_RDWR)";
+d["ftruncate"]=$2"("$3","$4")";
+d["map"]=""$3"=(int*)"$2"(0,"$4",PROT_READ|PROT_WRITE,MAP_SHARED,"$5",0)";
+d["munmap"]=$2"("$4","$5")";
+d["memcpy"]=$2"("$3","$4","$5")";
+d["getchar"]=""$3"="$2()";
+d["putchar"]=$2"("$3"["$4"])";
+d["fflush"]=$2"(stdout)";
+d["get"]=""$3"=*("$4")";
+d["set"]="*"$4"="$3"";
+d["control"]=$3"("$4"){";
+d["literal"]=$2;
+d["case"]=$2" "$3":"
+d["var"]=$2" "$3";
+d["shell"]="system("$3")";
+print d[t]";"}';};
