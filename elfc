@@ -2,29 +2,25 @@
 #copyright john morrris beck 2026 gpl2
 fastjit(){ cat>"$1/$2.c";filcc "$1/$2.c" -o "$1/$2.exe";
            rm "$1/$2.c";chmod +x "$1/$2.exe";};
-elfc(){ awk  'function i(i){return substr($0,1+i,1)}
-function r(i){return "r["i"]"}function p(i){return "p["i"]"}
-$2=="c"{for(i(i=2;i<=NF;i+=4){printf "%s" $i}print}
-$2!="c"{if(substr($2,1,1)!="#"){for(c=1;c<=length($0);c++){
+elfc(){ awk 'BEGIN{print "void "$1"(int **p,*r,i;char *s){";
 b=",PROT_READ|PROT_WRITE,MAP_SHARED,(int)(intptr_t)";}
-d["+"]=r(i(3))"="r(i(3))r(i(2))r(i(4));
-d["f"]=r(i(2))"=open("r(i(3))",O_RDWR)";
-d["t"]="ftruncate("r(i(2))","r(i(3))")";
-d["a"]=p(i(2))"=(int*)mmap(0,r(i(3))"b r(i(4))",0)";
-d["d"]="munmap("p(i(3))","r(i(4))")";
-d["p"]=p(i(2))"="p(i(3));
-d["c"]="memcpy("p(i(2))","p(i(3))","r(i(4))")";
-d["b"]=r(i(2))"="i(3);
-d["i"]=r(i(2))"=getchar()";
-d["o"]="putchar("p(r(i(2)))"["r(i(3))"])";
-d["r"]=r(i(2))"=*("p(r(i(3)))")";
-d["w"]="*"p(r(i(3)))"="r(i(2));
-d["\""]="free(s);s=malloc(r(i(2)));for(int i=0;i<"r(i(2))";s[i]=*(char*)(*"p(r(i(4)))"+i++))";
-d["l"]="while("r(i(2))"){";
-d["j"]="switch("r(i(2))"){";
-d["}"]="}";
-d[";"]="break";
-d["T"]="case "i(3)":"
-d["x"]="exit(0)"
-d["$"]=system(s);
-print d[t]";"}}}}';};
+{d["op"]="r["$3"]=r["$3"]"$2"r["$4"]";
+d["open"]="r["$2"]=open(r["$3"],O_RDWR)";
+d["ftruncate"]=$1"(r["$2"],r["$3"])";
+d["map"]="p["$2"]=(int*)mmap[0,r["$3"]"b"r["$4"],0)";
+d["unmap"]="munmap(p["$3"],r["$4"])";
+d["copy"]="memcpy(p["$2"],p["$3"],r["$4"])";
+d["assign"]="r["$2"]="$3;
+d["input"]="r["$2"]=getchar()";
+d["outpit"]="putchar(p[r["$2"]][r["$3"]])";
+d["get"]="r["$2"]=*(p[r["$3"]])";
+d["set"]="*p[r["$3"]]=r["$2"]";
+d["string"]="free(s);s=malloc(r["$2"]);for(i=0;i<r["$2"];";
+d["string"]=d["string"] "s[i]=*(char*)(*p[r["$4"]+i++]))";
+d["control"]=$2"("$3"){";
+d["end"]="}";
+d["break"]="break";
+d["case"]="case "$3":"
+d["return"]="return r["$2"]
+d["shell"]=system(s);
+print d[t]";"}}';};
