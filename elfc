@@ -1,19 +1,22 @@
 #copyright john morrris beck 2026 gpl2
-elfc(){ awk '$1!="elfc",$1=="elfc"{#
-d["assign"]=""$4"="$5;
-d["open"]=""$3"="$2"("$4",O_RDWR)";
-d["ftruncate"]=$2"("$3","$4")";
-d["map"]=""$3"=(int*)"$2"(0,"$4",PROT_READ|PROT_WRITE,MAP_SHARED,"$5",0)";
-d["munmap"]=$2"("$3","$4")";
-d["memcpy"]=$2"("$3","$4","$5")";
-d["getchar"]=""$3"="$2()";
-d["putchar"]=$2"("$3"["$4"])";
-d["fflush"]=$2"(stdout)";
-d["get"]=""$3"=*("$4")";
-d["set"]="*"$4"="$3"";
-d["control"]=$3"("$4"){";
-d["literal"]=$2;
-d["case"]=$2" "$3":"
-d["var"]=$2" "$3";
-d["shell"]="system("$3")";
-print d[t]";"}'>"$1";filcc "$1" -o "$1.exe";rm "$1";chmod +x "$1.exe";};
+elfc(){ awk 'funcion c(x,y){d[x]=y}
+$1!="elfc",$1=="elfc"{
+b=",PROT_READ|PROT_WRITE,MAP_SHARED,";
+c("assign",$4"="$5)
+c("open",$3"="$2"("$4",O_RDWR)")
+c("ftruncate",$2"("$3","$4")")
+c("map",""$3"=(int*)"$2"(0,"$4b$5",0)")
+c("munmap",$2"("$3","$4")")
+c("memcpy",$2"("$3","$4","$5")")
+c("getchar",""$3"="$2()")
+c("putchar",$2"("$3"["$4"])")
+c("fflush",$2"(stdout)")
+c("get",""$3"=*("$4")")
+c("set","*"$4"="$3"")
+c("control",$3"("$4"){")
+c("literal",$2)
+c("case",$2" "$3":"
+c("var",$2" "$3")
+c("shell","system("$3")");
+print d[$2]";"}'>"$1";filcc "$1" -o "$1.exe";
+	rm "$1";chmod +x "$1.exe";};
