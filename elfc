@@ -1,21 +1,22 @@
 elfc(){ #copyright john morrris beck 2026 gpl2
-    awk 'function c(x,y){print $2==x?y:0}
+    awk 'function c(x,y){print $2==x?y:""}
 $1!="elfc",$1=="elfc"{
-b=",PROT_READ|PROT_WRITE,MAP_SHARED,";
-c("assign",$4"="$5)
-c("open",$3"="$2"("$4",O_RDWR)")
-c("ftruncate",$2"("$3","$4")")
-c("map",$3"=(int*)"$2"(0,"$4b$5",0)")
-c("munmap",$2"("$3","$4")")
-c("memcpy",$2"("$3","$4","$5")")
-c("getchar",$3"="$2()")
-c("putchar",$2"("$3")
-c("fflush",$2"(stdout)")
-c("get",$4"=*("$3"*)"$5)
-c("set","*("$3"*)"$4"="$3)
-c("control",$3"("$4"){")
-c("literal",$2)
-c("case",$2" "$3":")
-c("var",$2" "$3")
-c("shell","system("$3")")"}
+a=$2;b=$3;c=$4;d=$5;
+z=",PROT_READ|PROT_WRITE,MAP_SHARED,";
+c("assign",c"="d)
+c("open",b"="a"("c",O_RDWR)")
+c("ftruncate",a"("b","c")")
+c("map",b"=(int*)"a"(0,"cd",0)")
+c("munmap",a"("b","c")")
+c("memcpy",a"("b","c","d")")
+c("getchar",b"="a()")
+c("putchar",a"("b")
+c("fflush",a"(stdout)")
+c("get",c"=*("b"*)"d)
+c("set","*("b"*)"c"="b)
+c("control",b"("c"){")
+c("literal",a)
+c("case",a" "b":")
+c("var",a" "b")
+c("shell","system("b")")"}
 '>"$1";filcc "$1" -o "$1.exe";rm "$1";chmod +x "$1.exe";};
