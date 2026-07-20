@@ -6,7 +6,7 @@ z=",PROT_READ|PROT_WRITE,MAP_SHARED,";
 c("assign",c"="d)
 c("open",b"="a"("c",O_RDWR)")
 c("ftruncate",a"("b","c")")
-c("map",b"=(int*)"a"(0,"cd",0)")
+c("map",b"=(int*)"a"(0,"c d",0)")
 c("munmap",a"("b","c")")
 c("memcpy",a"("b","c","d")")
 c("getchar",b"="a()")
