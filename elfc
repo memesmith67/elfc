@@ -1,5 +1,5 @@
 elfc(){ #copyright john morrris beck 2026 gpl2
-    awk 'function c(x,y){print $2==x?y:""}
+    awk 'function c(x,y){print $2==x?y";":""}
 $1!="elfc",$1=="elfc"{
 a=$2;b=$3;c=$4;d=$5;
 z=",PROT_READ|PROT_WRITE,MAP_SHARED,";
